@@ -63,40 +63,62 @@ const PasswordList = () => {
   };
   return (
     <Layout>
-      <div className="w-11/12  mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-blue-200/30">
-            <h3 className="text-xl font-semibold text-blue-800">
-              Total Passwords
+      <div className="w-11/12 mx-auto lg:px-8 py-6 md:space-y-4 space-y-3">
+        <div className="grid grid-cols-4 md:gap-4 gap-1 font-['JetBrains_Mono']">
+          <div
+            onClick={() => dispatch(setSelectedCategory("All"))}
+            className="bg-gradient-to-br from-blue-50 to-blue-400 p-2 rounded-lg shadow-sm hover:shadow-md duration-300 border border-blue-200/30 cursor-pointer hover:scale-105 transform transition-transform"
+          >
+            <h3 className="md:text-xl text-xs font-semibold text-blue-800 truncate">
+              Total
             </h3>
-            <p className="text-3xl font-bold text-blue-600">{stats.total}</p>
+            <p className="md:text-xl text-xs font-bold text-blue-600">
+              {stats.total}
+            </p>
           </div>
-          <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-green-200/30">
-            <h3 className="text-xl font-semibold text-green-800">Personal</h3>
-            <p className="text-3xl font-bold text-green-600">
+          <div
+            onClick={() => dispatch(setSelectedCategory("Personal"))}
+            className="bg-gradient-to-br from-green-50 to-green-400 p-2 rounded-lg shadow-sm hover:shadow-md duration-300 border border-green-200/30 cursor-pointer hover:scale-105 transform transition-transform"
+          >
+            <h3 className="md:text-xl text-xs  font-semibold text-green-800 truncate">
+              Personal
+            </h3>
+            <p className="md:text-xl text-xs  font-bold text-green-600">
               {stats.personal}
             </p>
           </div>
-          <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-yellow-200/30">
-            <h3 className="text-xl font-semibold text-yellow-800">Work</h3>
-            <p className="text-3xl font-bold text-yellow-600">{stats.work}</p>
+          <div
+            onClick={() => dispatch(setSelectedCategory("Work"))}
+            className="bg-gradient-to-br from-yellow-50 to-yellow-300 p-2 rounded-lg shadow-sm hover:shadow-md duration-300 border border-yellow-200/30 cursor-pointer hover:scale-105 transform transition-transform"
+          >
+            <h3 className="md:text-xl text-xs  font-semibold text-yellow-800 truncate">
+              Work
+            </h3>
+            <p className="md:text-xl text-xs font-bold text-yellow-600">
+              {stats.work}
+            </p>
           </div>
-          <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-purple-200/30">
-            <h3 className="text-xl font-semibold text-purple-800">Finance</h3>
-            <p className="text-3xl font-bold text-purple-600">
+          <div
+            onClick={() => dispatch(setSelectedCategory("Finance"))}
+            className="bg-gradient-to-br from-purple-50 to-purple-300 p-2 rounded-lg shadow-sm hover:shadow-md duration-300 border border-purple-200/30 cursor-pointer hover:scale-105 transform transition-transform"
+          >
+            <h3 className="md:text-xl text-xs  font-semibold text-purple-800 truncate">
+              Finance
+            </h3>
+            <p className="md:text-xl text-xs font-bold text-purple-600">
               {stats.finance}
             </p>
           </div>
         </div>
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0 mb-8">
-          <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight font-['Fira_Code'] ">
+        <div className="flex items-center justify-between">
+          <h1 className="text-sm md:text-2xl font-black font-poppins bg-gradient-to-r from-blue-800 to-black bg-clip-text font-['JetBrains_Mono'] text-transparent">
             Password Vault
           </h1>
           <Link
             to="/add-password"
-            className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-800 hover:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200 font-['Fira_Code'] "
+            className="text-xs md:text-base flex justify-center items-center px-2 py-2 md:px-6 md:py-3 border border-transparent font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-blue-800 to-black hover:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200 font-['Fira_Code'] "
           >
-            <MdAddCircleOutline className="text-2xl mr-2" />
+            <MdAddCircleOutline className="md:text-2xl text-xl mr-2" />
             Add New Password
           </Link>
         </div>
@@ -132,7 +154,7 @@ const PasswordList = () => {
           {filteredPasswords.map((password) => (
             <div
               key={password.id}
-              className="bg-white overflow-hidden rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200 hover:border-indigo-200"
+              className="bg-gradient-to-r bg-white overflow-hidden rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200 hover:border-indigo-200"
             >
               <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
@@ -162,7 +184,7 @@ const PasswordList = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="space-y-1">
                     <div className="flex items-center gap-3">
-                      <span className="text-sm sm:text-base font-medium text-gray-600">
+                      <span className="text-xs sm:text-sm font-medium text-gray-600">
                         Username
                       </span>
                       <button
@@ -172,7 +194,7 @@ const PasswordList = () => {
                         className="text-gray-500 hover:text-gray-700 focus:outline-none transition-colors duration-200 relative"
                         title="Copy username"
                       >
-                        <FaRegCopy className="text-xl" />
+                        <FaRegCopy className="text-lg sm:text-xl" />
                         {copiedField === `username-${password.id}` && (
                           <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs py-1 px-2 rounded">
                             Copied!
@@ -184,14 +206,14 @@ const PasswordList = () => {
                       onClick={() =>
                         handleCopy(password.username, "username", password.id)
                       }
-                      className="text-gray-900 bg-gray-50/70 sm:p-3 rounded-lg backdrop-blur-sm font-['JetBrains_Mono'] font-semibold text-base"
+                      className="text-gray-900 bg-gray-50/70 p-2 sm:p-3 rounded-lg backdrop-blur-sm font-['JetBrains_Mono'] font-semibold text-sm sm:text-base"
                     >
                       {password.username}
                     </p>
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center gap-4">
-                      <span className="text-sm sm:text-base font-medium text-gray-600 font-inter">
+                      <span className="text-xs sm:text-sm font-medium text-gray-600 font-inter">
                         URL
                       </span>
                       <button
@@ -201,34 +223,35 @@ const PasswordList = () => {
                         className="text-gray-500 hover:text-gray-700 focus:outline-none transition-colors duration-200 relative"
                         title="Copy URL"
                       >
-                        <FaRegCopy className="text-xl " />
+                        <FaRegCopy className="text-base sm:text-lg" />
                         {copiedField === `url-${password.id}` && (
-                          <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs py-1 px-2 rounded">
+                          <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-[10px] sm:text-xs py-1 px-2 rounded">
                             Copied!
                           </span>
                         )}
                       </button>
                     </div>
-                    <a
-                      href={password.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-indigo-600 hover:text-indigo-800 hover:underline transition-colors duration-200 block bg-gray-50/70 p-2 sm:p-3 rounded-lg backdrop-blur-sm hover:bg-white/80 font-['JetBrains_Mono'] font-semibold text-base"
+                    <p
+                      onClick={() =>
+                        handleCopy(password.url, "url", password.id)
+                      }
+                      className="text-gray-900 bg-gray-50/70 p-2 sm:p-3 rounded-lg backdrop-blur-sm font-['JetBrains_Mono'] font-semibold text-xs sm:text-sm"
                     >
-                      {new URL(password.url).hostname}
-                    </a>
+                      {password.url}
+                    </p>
                   </div>
 
-                  {/* Password */}
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-4">
-                      <span className="text-sm sm:text-base font-medium text-gray-600 font-inter">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-3">
+                      <span className="text-[10px] sm:text-xs font-medium text-gray-600">
                         Password
                       </span>
                       <button
                         onClick={() =>
                           handleCopy(
-                            decryptPassword(password.password),
+                            showPassword[password.id]
+                              ? decryptPassword(password.password)
+                              : "********",
                             "password",
                             password.id
                           )
@@ -236,30 +259,21 @@ const PasswordList = () => {
                         className="text-gray-500 hover:text-gray-700 focus:outline-none transition-colors duration-200 relative"
                         title="Copy password"
                       >
-                        <FaRegCopy className="text-xl" />
+                        <FaRegCopy className="text-base sm:text-lg" />
                         {copiedField === `password-${password.id}` && (
-                          <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs py-1 px-2 rounded">
+                          <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-[10px] sm:text-xs py-1 px-2 rounded">
                             Copied!
                           </span>
                         )}
                       </button>
-                    </div>
-
-                    <div className="relative w-full sm:w-3/4">
-                      <input
-                        type={showPassword[password.id] ? "text" : "password"}
-                        value={decryptPassword(password.password)}
-                        readOnly
-                        className="w-full py-2 sm:py-2.5 px-3 pr-10 bg-gray-50 rounded-md text-base font-mono outline-none ring-0 focus:ring-0"
-                      />
                       <button
                         onClick={() =>
-                          setShowPassword((prev) => ({
-                            ...prev,
-                            [password.id]: !prev[password.id],
-                          }))
+                          setShowPassword({
+                            ...showPassword,
+                            [password.id]: !showPassword[password.id],
+                          })
                         }
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none transition-colors duration-200"
+                        className="text-gray-500 hover:text-gray-700 focus:outline-none transition-colors duration-200"
                         title={
                           showPassword[password.id]
                             ? "Hide password"
@@ -267,12 +281,28 @@ const PasswordList = () => {
                         }
                       >
                         {showPassword[password.id] ? (
-                          <FaRegEye className="text-lg sm:text-base" />
+                          <FaRegEyeSlash className="text-base sm:text-lg" />
                         ) : (
-                          <FaRegEyeSlash className="text-lg sm:text-base" />
+                          <FaRegEye className="text-base sm:text-lg" />
                         )}
                       </button>
                     </div>
+                    <p
+                      onClick={() =>
+                        handleCopy(
+                          showPassword[password.id]
+                            ? decryptPassword(password.password)
+                            : "********",
+                          "password",
+                          password.id
+                        )
+                      }
+                      className="text-gray-900 bg-gray-50/70 p-2 sm:p-3 rounded-lg backdrop-blur-sm font-['JetBrains_Mono'] font-semibold text-[10px] sm:text-sm"
+                    >
+                      {showPassword[password.id]
+                        ? decryptPassword(password.password)
+                        : "********"}
+                    </p>
                   </div>
                 </div>
               </div>

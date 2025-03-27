@@ -1,20 +1,37 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import Layout from '../components/Layout';
+import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { addPassword } from '../store/passwordSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { FaEye, FaEyeSlash, FaKey, FaLink, FaTag, FaUser } from 'react-icons/fa';
 
 const AddPassword = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const categories = useSelector((state) => state.passwords.categories);
+  const [showPassword, setShowPassword] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState(0);
   const [formData, setFormData] = useState({
     title: '',
     username: '',
     password: '',
-    category: 'Personal',
-    notes: ''
+    url: '',
+    category: 'Personal'
   });
+
+  const calculatePasswordStrength = (password) => {
+    let strength = 0;
+    if (password.length >= 8) strength += 1;
+    if (/[A-Z]/.test(password)) strength += 1;
+    if (/[0-9]/.test(password)) strength += 1;
+    if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+    return strength;
+  };
+
+  useEffect(() => {
+    setPasswordStrength(calculatePasswordStrength(formData.password));
+  }, [formData.password]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -30,77 +47,169 @@ const AddPassword = () => {
     }));
   };
 
+  const getStrengthColor = () => {
+    switch (passwordStrength) {
+      case 0: return 'bg-red-500';
+      case 1: return 'bg-orange-500';
+      case 2: return 'bg-yellow-500';
+      case 3: return 'bg-blue-500';
+      case 4: return 'bg-green-500';
+      default: return 'bg-gray-200';
+    }
+  };
+
   return (
     <Layout>
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6 font-poppins">Add New Password</h1>
-        <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-lg shadow">
-          <div>
-            <label className="block text-gray-700 mb-2 font-inter">Title</label>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="w-full md:w-3/5 mx-auto px-4 py-6 md:py-8"
+      >
+        <h1 className="text-2xl md:text-3xl font-black mb-4 md:mb-6 font-poppins bg-gradient-to-r from-blue-800 to-black bg-clip-text font-['JetBrains_Mono'] text-transparent">
+          Add New Password
+        </h1>
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-4 md:space-y-6 bg-white/90 backdrop-blur-sm p-4 md:p-8 rounded-2xl shadow-xl border border-gray-200/50"
+        >
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+              <FaTag className="w-5 h-5" />
+            </div>
             <input
               type="text"
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className="w-full p-2 border rounded font-inter bg-gray-50 hover:bg-white focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+              placeholder="Title"
+              className="w-full pl-10 pr-3 py-3 border-b-2 border-gray-200 bg-transparent text-gray-900 text-xl  font-['JetBrains_Mono'] placeholder-transparent peer focus:outline-none"
               required
             />
+            <label className="absolute left-10 -top-3.5 text-sm text-gray-600 peer-placeholder-shown:text-base peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-sm transition-all duration-300  font-['JetBrains_Mono']">
+              Title
+            </label>
           </div>
-          <div>
-            <label className="block text-gray-700 mb-2 font-inter">Username</label>
+
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+              <FaUser className="w-5 h-5" />
+            </div>
             <input
               type="text"
               name="username"
               value={formData.username}
               onChange={handleChange}
-              className="w-full p-2 border rounded font-inter bg-gray-50 hover:bg-white focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+              placeholder="Username"
+              className="w-full pl-10 pr-3 py-3 border-b-2 border-gray-200 bg-transparent text-gray-900 placeholder-transparent peer focus:outline-none text-xl  font-['JetBrains_Mono']"
               required
             />
+            <label className="absolute left-10 -top-3.5 text-sm text-gray-600 peer-placeholder-shown:text-base peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-sm transition-all duration-300  font-['JetBrains_Mono']">
+              Username
+            </label>
           </div>
-          <div>
-            <label className="block text-gray-700 mb-2 font-inter">Password</label>
+
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+              <FaKey className="w-5 h-5" />
+            </div>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full p-2 border rounded font-inter bg-gray-50 hover:bg-white focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+              placeholder="Password"
+              className="w-full pl-10 pr-12 py-3 border-b-2 border-gray-200 bg-transparent text-gray-900 placeholder-transparent peer focus:outline-none text-xl  font-['JetBrains_Mono']"
               required
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700 transition-colors duration-200"
+            >
+              {showPassword ? (
+                <FaEyeSlash className="w-5 h-5" />
+              ) : (
+                <FaEye className="w-5 h-5" />
+              )}
+            </button>
+            <label className="absolute left-10 -top-3.5 text-sm text-gray-600 peer-placeholder-shown:text-base peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-sm transition-all duration-300 font-['JetBrains_Mono']">
+              Password
+            </label>
+            <div className="mt-2 flex gap-1">
+              {[...Array(4)].map((_, index) => (
+                <div
+                  key={index}
+                  className={`h-1 flex-1 rounded-full transition-colors duration-300 ${
+                    index < passwordStrength
+                      ? getStrengthColor()
+                      : "bg-gray-200"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
-          <div>
-            <label className="block text-gray-700 mb-2 font-inter">Category</label>
+
+          <div className="relative">
             <select
               name="category"
               value={formData.category}
               onChange={handleChange}
-              className="w-full p-2 border rounded font-inter bg-gray-50 hover:bg-white focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+              className="w-full px-3 py-3 border-b-2 border-gray-200 bg-transparent text-gray-900 appearance-none focus:outline-none font-['JetBrains_Mono']"
             >
               {categories.map((category) => (
-                <option key={category} value={category}>
+                <option
+                  key={category}
+                  value={category}
+                  className="bg-white font-['JetBrains_Mono']"
+                >
                   {category}
                 </option>
               ))}
             </select>
+            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+              <svg
+                className="h-5 w-5 text-gray-500"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
           </div>
-          <div>
-            <label className="block text-gray-700 mb-2 font-inter">Notes</label>
-            <textarea
-              name="notes"
-              value={formData.notes}
+
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+              <FaLink className="w-5 h-5" />
+            </div>
+            <input
+              type="url"
+              name="url"
+              value={formData.url}
               onChange={handleChange}
-              className="w-full p-2 border rounded font-inter bg-gray-50 hover:bg-white focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
-              rows="3"
+              placeholder="URL"
+              className="w-full pl-10 pr-3 py-3 border-b-2 border-gray-200 bg-transparent text-gray-900 placeholder-transparent peer focus:outline-none text-xl  font-['JetBrains_Mono']"
+              required
             />
+            <label className="absolute left-10 -top-3.5 text-sm text-gray-600 peer-placeholder-shown:text-base peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-sm transition-all duration-300 font-['JetBrains_Mono']">
+              URL
+            </label>
           </div>
-          <button
+
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             type="submit"
-            className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 font-inter text-base font-medium shadow-sm hover:shadow transition-all duration-200"
+            className="w-full bg-gradient-to-r from-blue-600 to-black text-white py-4 rounded-xl font-medium shadow-lg hover:shadow-blue-500/25 transition-all duration-200"
           >
             Save Password
-          </button>
+          </motion.button>
         </form>
-      </div>
+      </motion.div>
     </Layout>
   );
 };
