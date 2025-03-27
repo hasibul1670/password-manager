@@ -81,7 +81,7 @@ const PasswordList = () => {
             className="bg-gradient-to-br from-green-50 to-green-400 p-2 rounded-lg shadow-sm hover:shadow-md duration-300 border border-green-200/30 cursor-pointer hover:scale-105 transform transition-transform"
           >
             <h3 className="md:text-xl text-xs  font-semibold text-green-800 truncate">
-              Personal v2
+              Personal
             </h3>
             <p className="md:text-xl text-xs  font-bold text-green-600">
               {stats.personal}
