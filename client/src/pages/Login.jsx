@@ -78,14 +78,14 @@ const Login = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+              className="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-poppins"
             >
               Welcome Back
             </motion.h2>
             {!otpSent ? (
               <form onSubmit={handleEmailSubmit} className="space-y-6">
                 <div className="relative">
-                  <label className="block text-gray-700 text-sm font-medium mb-2">
+                  <label className="block text-gray-700 text-sm font-medium mb-2 font-inter">
                     Email Address
                   </label>
                   <motion.input
@@ -93,7 +93,7 @@ const Login = () => {
                     type="email"
                     value={emailInput}
                     onChange={(e) => setEmailInput(e.target.value)}
-                    className="w-full p-4 border border-gray-300 rounded-xl bg-white/50 backdrop-blur-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-800 placeholder-gray-500"
+                    className="w-full p-4 border border-gray-300 rounded-xl bg-white/50 backdrop-blur-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-800 placeholder-gray-500 font-inter"
                     placeholder="Enter your email"
                     required
                   />
@@ -102,7 +102,7 @@ const Login = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   type="submit"
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-xl font-medium shadow-lg hover:shadow-blue-500/25 transition-all duration-200"
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-xl font-medium shadow-lg hover:shadow-blue-500/25 transition-all duration-200 font-inter"
                 >
                   Send OTP
                 </motion.button>
@@ -140,7 +140,7 @@ const Login = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   type="submit"
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-xl font-medium shadow-lg hover:shadow-blue-500/25 transition-all duration-200"
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-xl font-medium shadow-lg hover:shadow-blue-500/25 transition-all duration-200 font-inter"
                 >
                   Verify Code
                 </motion.button>

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import AddPassword from './pages/AddPassword';
-import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import PasswordList from './pages/PasswordList';
 
@@ -17,14 +16,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route
-          path="/dashboard"
-          element={
-            <PrivateRoute>
-              <Dashboard />
-            </PrivateRoute>
-          }
-        />
+
         <Route
           path="/passwords"
           element={
@@ -41,7 +33,7 @@ const App = () => {
             </PrivateRoute>
           }
         />
-        <Route path="/" element={<Navigate to="/dashboard" />} />
+        <Route path="/" element={<Navigate to="/passwords" />} />
       </Routes>
     </Router>
   );
