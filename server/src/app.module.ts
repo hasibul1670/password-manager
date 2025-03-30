@@ -1,21 +1,17 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
+import config from './config/config';
 import { JwtModule } from '@nestjs/jwt';
-import { MongooseModule } from '@nestjs/mongoose';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
-import config from './dbConfig/config';
-import { LoggerMiddleware } from './helpers/logger/logger.middleware';
-import { RolesGuard } from './helpers/roleGuard/roles.guard';
-import { AdminModule } from './modules/admin/admin.module';
+import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './modules/auth/auth.module';
 import { BillModule } from './modules/bill/bill.module';
-import { DatabaseServiceModule } from './modules/database-service/database-service.module';
-import { FeaturesModule } from './modules/features/features.module';
-import { SuperAdminModule } from './modules/super-admin/super-admin.module';
-import { TenantModule } from './modules/tenant/tenant.module';
 import { UserModule } from './modules/user/user.module';
+import { AdminModule } from './modules/admin/admin.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { RolesGuard } from './helpers/roleGuard/roles.guard';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { LoggerMiddleware } from './helpers/logger/logger.middleware';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 
 @Module({
   imports: [
@@ -41,14 +37,9 @@ import { UserModule } from './modules/user/user.module';
       }),
       inject: [ConfigService],
     }),
-    TenantModule,
     UserModule,
-    TenantModule,
     AuthModule,
-    DatabaseServiceModule,
-    SuperAdminModule,
     AdminModule,
-    FeaturesModule,
     BillModule,
   ],
   controllers: [AppController],

@@ -1,69 +1,26 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { HttpStatus, Injectable } from '@nestjs/common';
-import { JwtTokenGeneratorService } from '../../helpers/JwtTokenGeneratorService/JwtTokenGeneratorService';
-import { bcryptPasword } from '../../helpers/bcryptPasword/bcryptPasword';
-import { ApiError } from '../../helpers/utills/ApiError';
-import { AdminModel } from '../admin/schema/admin.schema';
-import { SuperAdminModel } from '../super-admin/schema/super-admin.schema';
-import { LoginAuthDto } from './dto/login-auth.dto';
+import { Injectable } from '@nestjs/common';
+import { CreateAuthDto } from './dto/create-auth.dto';
+import { UpdateAuthDto } from './dto/update-auth.dto';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private readonly passwordService: bcryptPasword,
-    private readonly jwtTokenService: JwtTokenGeneratorService,
-  ) {}
-
-  async login(loginAuthDto: LoginAuthDto) {
-    const { email, password } = loginAuthDto;
-    const admin = await AdminModel.findOne({ email: email }).populate(
-      'tenantId',
-    );
-    if (
-      !admin ||
-      !(await this.passwordService.comparePasswords(password, admin.password))
-    ) {
-      throw ApiError(
-        HttpStatus.UNAUTHORIZED,
-        'Invalid credentials',
-        'Invalid credentials',
-      );
-    }
-    const { password: _, ...adminWithoutPassword } = admin.toObject();
-
-    const payload = { ...adminWithoutPassword };
-    const accessToken = this.jwtTokenService.generateAccessToken(payload);
-    const refreshToken = this.jwtTokenService.generateRefreshToken(payload);
-
-    return {
-      admin: adminWithoutPassword,
-      accessToken,
-      refreshToken,
-    };
+  create(createAuthDto: CreateAuthDto) {
+    return 'This action adds a new auth';
   }
-  async loginSuperAdmin(loginAuthDto: LoginAuthDto) {
-    const { email, password } = loginAuthDto;
-    const admin = await SuperAdminModel.findOne({ email: email });
-    if (
-      !admin ||
-      !(await this.passwordService.comparePasswords(password, admin.password))
-    ) {
-      throw ApiError(
-        HttpStatus.UNAUTHORIZED,
-        'Invalid credentials',
-        'Invalid credentials',
-      );
-    }
-    const { password: _, ...adminWithoutPassword } = admin.toObject();
 
-    const payload = { ...adminWithoutPassword };
-    const accessToken = this.jwtTokenService.generateAccessToken(payload);
-    const refreshToken = this.jwtTokenService.generateRefreshToken(payload);
+  findAll() {
+    return `This action returns all auth`;
+  }
 
-    return {
-      admin: adminWithoutPassword,
-      accessToken,
-      refreshToken,
-    };
+  findOne(id: number) {
+    return `This action returns a #${id} auth`;
+  }
+
+  update(id: number, updateAuthDto: UpdateAuthDto) {
+    return `This action updates a #${id} auth`;
+  }
+
+  remove(id: number) {
+    return `This action removes a #${id} auth`;
   }
 }

@@ -3,6 +3,6 @@ import { Controller, Get } from '@nestjs/common';
 export class AppController {
   @Get()
   getStatus(): string {
-    return 'MS-Saas Server is running on !!! BY NestJS';
+    return 'Password-App Server is running on! Powered by NestJS';
   }
 }

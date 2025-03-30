@@ -11,7 +11,6 @@ async function bootstrap() {
   app.setGlobalPrefix('api/v1');
   app.use(cookieParser());
   app.get(ConfigService);
-  // Use global validation pipe
   app.useGlobalPipes(validationPipe);
   // app.useGlobalFilters(new AllExceptionsFilter());
   await app.listen(5000);
