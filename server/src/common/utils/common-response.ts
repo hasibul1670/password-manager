@@ -1,4 +1,5 @@
-import { ApiResponse } from 'src/interface/common/apiResponse';
+import { ApiResponse } from "../interface/apiResponse";
+
 
 export function createApiResponse<T>(
   status: 'success' | 'error',

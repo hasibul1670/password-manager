@@ -1,15 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { PasswordService } from './password.service';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { createApiResponse } from 'src/common/utils/common-response';
 import { CreatePasswordDto } from './dto/create-password.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
+import { PasswordService } from './password.service';
 
 @Controller('password')
 export class PasswordController {
-  constructor(private readonly passwordService: PasswordService) {}
+  constructor(private readonly passwordService: PasswordService) { }
 
-  @Post()
-  create(@Body() createPasswordDto: CreatePasswordDto) {
-    return this.passwordService.create(createPasswordDto);
+  @Post('create-password')
+  async create(@Body() createPasswordDto: CreatePasswordDto) {
+    try {
+      const result = await this.passwordService.create(createPasswordDto);
+      return createApiResponse('success', 201, 'Password created successfully', result);
+    } catch (error) {
+      return createApiResponse('error', 400, error.message || 'Failed to create password', null);
+    }
   }
 
   @Get()

@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import cookieParser from 'cookie-parser';
 import * as dotenv from 'dotenv';
 import { AppModule } from './app.module';
-import { validationPipe } from './helpers/utills/validation-pipe.config';
+import { validationPipe } from './common/utils/validation-pipe.config';
 dotenv.config();
 
 async function bootstrap() {

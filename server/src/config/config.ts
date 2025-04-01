@@ -1,5 +1,5 @@
 export default () => ({
   database: {
-    connectionString: process.env.DB_URI,
+    connectionString: process.env.DATABASE_URL,
   },
 });

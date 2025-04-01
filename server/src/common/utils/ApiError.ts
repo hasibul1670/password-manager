@@ -1,5 +1,5 @@
 import { HttpException } from '@nestjs/common';
-import { ApiResponse } from '../../interface/common/apiResponse';
+import { ApiResponse } from '../interface/apiResponse';
 
 export function ApiError(
   statusCode?: any,
