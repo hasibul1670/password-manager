@@ -1,10 +1,10 @@
 import { ConfigService } from '@nestjs/config';
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import cookieParser from 'cookie-parser';
-import * as dotenv from 'dotenv';
 import { AppModule } from './app.module';
+
 import { validationPipe } from './common/utils/validation-pipe.config';
-dotenv.config();
+import { HttpExceptionFilter } from './filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,7 +12,8 @@ async function bootstrap() {
   app.use(cookieParser());
   app.get(ConfigService);
   app.useGlobalPipes(validationPipe);
-  // app.useGlobalFilters(new AllExceptionsFilter());
+  const { httpAdapter } = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new HttpExceptionFilter());
   await app.listen(5000);
 }
 bootstrap();

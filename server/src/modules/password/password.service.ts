@@ -9,27 +9,31 @@ import { UpdatePasswordDto } from './dto/update-password.dto';
 export class PasswordService {
   constructor(@InjectModel(Password.name) private passwordModel: Model<Password>) { }
   async create(createPasswordDto: CreatePasswordDto): Promise<CreatePasswordDto> {
-    try {
-      const res = await this.passwordModel.create(createPasswordDto);
-      return res;
-    } catch (error) {
-      throw error;
-    }
+    const res = await this.passwordModel.create(createPasswordDto);
+    return res;
   }
   async findAll() {
     const res = await this.passwordModel.find();
     return res;
   }
-  async findOne(id: number) {
+
+  async findOne(id: string) {
     const res = await this.passwordModel.findById(id);
     return res;
   }
-  update(id: number, updatePasswordDto: UpdatePasswordDto) {
-    const res = this.passwordModel.findByIdAndUpdate(id, updatePasswordDto);
+
+  async update(id: string, updatePasswordDto: UpdatePasswordDto) {
+    const res = await this.passwordModel.findByIdAndUpdate(
+      id,
+      updatePasswordDto,
+      { new: true }
+    );
     return res;
+
   }
-  remove(id: number) {
-    const res = this.passwordModel.findByIdAndDelete(id);
-    return res;
+
+  async remove(id: string) {
+    const result = await this.passwordModel.findByIdAndDelete(id);
+    return result;
   }
 }
