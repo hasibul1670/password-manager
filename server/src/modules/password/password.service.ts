@@ -13,7 +13,7 @@ export class PasswordService {
     return res;
   }
   async findAll() {
-    const res = await this.passwordModel.find();
+    const res = await this.passwordModel.find({})
     return res;
   }
 

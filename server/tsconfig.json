@@ -22,5 +22,6 @@
     "noFallthroughCasesInSwitch": false,
     "strict": false,
     "typeRoots": ["./node_modules/@types"]
-  }
+  },
+  "include": ["src/**/*", "src/common/template/**/*"]
 }

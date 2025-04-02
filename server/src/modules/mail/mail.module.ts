@@ -2,6 +2,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 import { Module } from '@nestjs/common';
 import { MailService } from './mail.service';
+import * as path from 'path';
 
 @Module({
     imports: [
@@ -18,7 +19,8 @@ import { MailService } from './mail.service';
                 from: '"Password App" <" <EMAIL>',
             },
             template: {
-                dir: process.cwd() + '/src/common/template/',
+                // dir: process.cwd() + '/src/common/template/',
+                dir: path.join(process.cwd(), '/src/common/template/'), // Use process.cwd() for consistent root path
                 adapter: new PugAdapter(),
                 options: {
                     strict: true,

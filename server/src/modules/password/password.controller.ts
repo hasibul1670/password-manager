@@ -41,20 +41,20 @@ export class PasswordController {
 
 
   @Get("all-password")
-  findAll() {
-    const res = this.passwordService.findAll();
+  async findAll() {
+    const res =await this.passwordService.findAll();
     return createApiResponse('success', 200, 'Passwords retrieved successfully', res);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    const res = this.passwordService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    const res = await this.passwordService.findOne(id);
     return createApiResponse('success', 200, 'Password retrieved successfully', res);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePasswordDto: UpdatePasswordDto) {
-    const res = this.passwordService.update(id, updatePasswordDto);
+  async update(@Param('id') id: string, @Body() updatePasswordDto: UpdatePasswordDto) {
+    const res = await this.passwordService.update(id, updatePasswordDto);
     return createApiResponse('success', 200, 'Password updated successfully', res);
   }
 
