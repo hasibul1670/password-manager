@@ -8,6 +8,9 @@ import { HttpExceptionFilter } from './filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.getHttpAdapter().get('/', (req, res) => {
+    res.json({ status: 'Server is running' });
+  });
   app.setGlobalPrefix('api/v1');
   app.use(cookieParser());
   app.get(ConfigService);

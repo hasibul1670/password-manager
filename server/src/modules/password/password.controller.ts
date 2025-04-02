@@ -1,9 +1,9 @@
 import { MailService } from '../mail/mail.service';
 import { PasswordService } from './password.service';
-import { generateOtp } from 'src/common/utils/otp.util';
+import { generateOtp } from '../../common/utils/otp';
 import { CreatePasswordDto } from './dto/create-password.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
-import { createApiResponse } from 'src/common/utils/common-response';
+import { createApiResponse } from '../../common/utils/common-response';
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, NotFoundException, Param, Patch, Post } from '@nestjs/common';
 
 @Controller('password')
