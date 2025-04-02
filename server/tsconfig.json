@@ -3,6 +3,7 @@
     "noUnusedLocals": false,
     "esModuleInterop": true,
     "module": "commonjs",
+    "types": ["node", "express"],
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -18,6 +19,8 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "strict": false,
+    "typeRoots": ["./node_modules/@types"]
   }
 }

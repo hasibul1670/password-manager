@@ -11,7 +11,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       const status = exception.getStatus();
       const message = exception.getResponse();
 
-      return response.status(status).json({
+      (response as any).status(status).json({
         status: 'error',
         code: status,
         message,
@@ -19,7 +19,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     }
 
     // Handle unexpected errors
-    return response.status(500).json({
+    return (response as any).status(500).json({
       status: 'error',
       code: 500,
       message: 'Internal Server Error',
