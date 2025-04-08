@@ -19,6 +19,12 @@ export class Password {
 
     @Prop({ required: true })
     category: string;
+
+    @Prop({ required: true })
+    email: string;
+
+    @Prop({})
+    passwordId: string;
 }
 
 export const PasswordSchema = SchemaFactory.createForClass(Password);

@@ -1,10 +1,20 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
+import { Auth } from './schema/auth.schema';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
+  constructor(@InjectModel(Auth.name) private authModel: Model<Auth>) { }
+  async createOTPInDB(createAuthDto: CreateAuthDto): Promise<CreateAuthDto> {
+    const res = await this.authModel.create(createAuthDto);
+    return res;
+  }
+
+
+  verifyOTP(createAuthDto: CreateAuthDto) {
     return 'This action adds a new auth';
   }
 

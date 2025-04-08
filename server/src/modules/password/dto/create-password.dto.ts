@@ -5,6 +5,7 @@ export class CreatePasswordDto {
     @IsNotEmpty()
     title: string;
 
+
     @IsString()
     @IsNotEmpty()
     username: string;
@@ -20,4 +21,8 @@ export class CreatePasswordDto {
     @IsString()
     @IsNotEmpty()
     category: string;
+
+    @IsString()
+    @IsNotEmpty()
+    email: string;
 }

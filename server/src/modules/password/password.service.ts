@@ -1,15 +1,20 @@
-import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Password } from './schema/password.schema';
+import { Model } from 'mongoose';
+import { generateId } from 'src/common/utils/generateId';
 import { CreatePasswordDto } from './dto/create-password.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
+import { Password } from './schema/password.schema';
 
 @Injectable()
 export class PasswordService {
   constructor(@InjectModel(Password.name) private passwordModel: Model<Password>) { }
+  
   async create(createPasswordDto: CreatePasswordDto): Promise<CreatePasswordDto> {
-    const res = await this.passwordModel.create(createPasswordDto);
+    const lastDoc = await this.passwordModel.countDocuments();
+    const passwordId = await generateId(lastDoc, 'P');
+    const res = await this.passwordModel.create(
+      { ...createPasswordDto, passwordId });
     return res;
   }
   async findAll() {
