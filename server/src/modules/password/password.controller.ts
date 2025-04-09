@@ -1,11 +1,11 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, NotFoundException, Param, Patch, Post, Request, UseGuards } from '@nestjs/common';
-import { AuthGuard } from 'src/common/guard/auth.guard';
-import { createApiResponse } from '../../common/utils/common-response';
-import { generateOtp } from '../../common/utils/otp';
 import { MailService } from '../mail/mail.service';
+import { generateOtp } from '../../common/utils/otp';
+import { PasswordService } from './password.service';
+import { AuthGuard } from '../../common/guard/auth.guard';
 import { CreatePasswordDto } from './dto/create-password.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
-import { PasswordService } from './password.service';
+import { createApiResponse } from '../../common/utils/common-response';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, NotFoundException, Param, Patch, Post, Request, UseGuards } from '@nestjs/common';
 
 @Controller('password')
 export class PasswordController {

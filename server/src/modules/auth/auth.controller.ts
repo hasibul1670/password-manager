@@ -1,11 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
-import { bcryptPassword } from 'src/common/helpers/bcryptPassword';
-import { generateOtp } from 'src/common/utils/otp';
-import { createApiResponse } from '../../common/utils/common-response';
-import { MailService } from '../mail/mail.service';
 import { AuthService } from './auth.service';
+import { generateOtp } from '../../common/utils/otp';
+import { MailService } from '../mail/mail.service';
 import { UpdateAuthDto } from './dto/update-auth.dto';
+import { bcryptPassword } from '../../common/helpers/bcryptPassword';
+import { createApiResponse } from '../../common/utils/common-response';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Res } from '@nestjs/common';
 
 @Controller('auth')
 export class AuthController {

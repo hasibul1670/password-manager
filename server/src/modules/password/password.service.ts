@@ -1,10 +1,10 @@
+import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { generateId } from 'src/common/utils/generateId';
+import { Password } from './schema/password.schema';
+import { generateId } from '../../common/utils/generateId';
 import { CreatePasswordDto } from './dto/create-password.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
-import { Password } from './schema/password.schema';
 
 @Injectable()
 export class PasswordService {

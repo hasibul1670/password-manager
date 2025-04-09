@@ -1,8 +1,5 @@
-/* eslint-disable prettier/prettier */
-// validation-pipe.config.ts
-
-import { ValidationPipe, BadRequestException } from '@nestjs/common';
 import { ValidationError } from 'class-validator';
+import { ValidationPipe, BadRequestException } from '@nestjs/common';
 
 export const validationPipe = new ValidationPipe({
   transform: true,

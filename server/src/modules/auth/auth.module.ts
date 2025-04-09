@@ -1,14 +1,14 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { MongooseModule } from '@nestjs/mongoose';
-import { isLoggedIn } from 'src/common/middleware/isLoggedIn';
-import { isLoggedOut } from 'src/common/middleware/isLoggedOut';
-import { JwtTokenGeneratorService } from '../../common/helpers/JwtTokenGeneratorService';
-import { bcryptPassword } from '../../common/helpers/bcryptPassword';
-import { MailModule } from '../mail/mail.module';
-import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { MailModule } from '../mail/mail.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { AuthController } from './auth.controller';
 import { Auth, AuthSchema } from './schema/auth.schema';
+import { isLoggedIn } from '../../common/middleware/isLoggedIn';
+import { isLoggedOut } from '../../common/middleware/isLoggedOut';
+import { bcryptPassword } from '../../common/helpers/bcryptPassword';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import { JwtTokenGeneratorService } from '../../common/helpers/JwtTokenGeneratorService';
 
 @Module({
   imports: [

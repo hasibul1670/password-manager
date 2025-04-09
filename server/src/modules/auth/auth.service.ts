@@ -1,12 +1,12 @@
-import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import * as bcrypt from 'bcrypt';
+import { Auth } from './schema/auth.schema';
+import { InjectModel } from '@nestjs/mongoose';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
-import { Auth } from './schema/auth.schema';
-import * as bcrypt from 'bcrypt';
-import { bcryptPassword } from 'src/common/helpers/bcryptPassword';
-import { JwtTokenGeneratorService } from 'src/common/helpers/JwtTokenGeneratorService';
+import { bcryptPassword } from '../../common/helpers/bcryptPassword';
+import { JwtTokenGeneratorService } from '../../common/helpers/JwtTokenGeneratorService';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 
 @Injectable()
 export class AuthService {
