@@ -1,10 +1,11 @@
-import { MailService } from '../mail/mail.service';
-import { PasswordService } from './password.service';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, NotFoundException, Param, Patch, Post, Request, UseGuards } from '@nestjs/common';
+import { AuthGuard } from 'src/common/guard/auth.guard';
+import { createApiResponse } from '../../common/utils/common-response';
 import { generateOtp } from '../../common/utils/otp';
+import { MailService } from '../mail/mail.service';
 import { CreatePasswordDto } from './dto/create-password.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
-import { createApiResponse } from '../../common/utils/common-response';
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, NotFoundException, Param, Patch, Post } from '@nestjs/common';
+import { PasswordService } from './password.service';
 
 @Controller('password')
 export class PasswordController {
@@ -14,6 +15,7 @@ export class PasswordController {
   ) { }
 
   @Post('send-mail')
+  @UseGuards(AuthGuard)
   async sendMail(@Body() body: { email: string, passwordId: string }) {
     const genOTP = generateOtp();
     try {
@@ -29,6 +31,7 @@ export class PasswordController {
 
 
   @Post('create-password')
+  @UseGuards(AuthGuard)
   async create(@Body() createPasswordDto: CreatePasswordDto) {
     try {
       const result = await this.passwordService.create(createPasswordDto);
@@ -41,24 +44,30 @@ export class PasswordController {
 
 
   @Get("all-password")
-  async findAll() {
-    const res =await this.passwordService.findAll();
+  @UseGuards(AuthGuard)
+  async findAll(@Request() req) {
+    const email = req.user.email; 
+    console.log("🍄🍄🍄 - :50 - PasswordController - findAll - email:", email)
+    const res = await this.passwordService.findAll(email);
     return createApiResponse('success', 200, 'Passwords retrieved successfully', res);
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard)
   async findOne(@Param('id') id: string) {
     const res = await this.passwordService.findOne(id);
     return createApiResponse('success', 200, 'Password retrieved successfully', res);
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard)
   async update(@Param('id') id: string, @Body() updatePasswordDto: UpdatePasswordDto) {
     const res = await this.passwordService.update(id, updatePasswordDto);
     return createApiResponse('success', 200, 'Password updated successfully', res);
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard)
   async remove(@Param('id') id: string) {
     if (!id) {
       throw new HttpException('Invalid ID provided', HttpStatus.FORBIDDEN);

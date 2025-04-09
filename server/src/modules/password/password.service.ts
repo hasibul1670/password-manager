@@ -9,7 +9,7 @@ import { Password } from './schema/password.schema';
 @Injectable()
 export class PasswordService {
   constructor(@InjectModel(Password.name) private passwordModel: Model<Password>) { }
-  
+
   async create(createPasswordDto: CreatePasswordDto): Promise<CreatePasswordDto> {
     const lastDoc = await this.passwordModel.countDocuments();
     const passwordId = await generateId(lastDoc, 'P');
@@ -17,8 +17,8 @@ export class PasswordService {
       { ...createPasswordDto, passwordId });
     return res;
   }
-  async findAll() {
-    const res = await this.passwordModel.find({})
+  async findAll(email: string) {
+    const res = await this.passwordModel.find({ email:email }).exec();
     return res;
   }
 
