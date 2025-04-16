@@ -8,22 +8,33 @@ import {
   FaSearch,
 } from "react-icons/fa";
 import { MdAddCircleOutline, MdDeleteOutline } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
-import {
-  deletePassword,
-  setSearchTerm,
-  setSelectedCategory,
-} from "../store/passwordSlice";
-const PasswordList = () => {
-  const dispatch = useDispatch();
-  const { passwords, categories, searchTerm, selectedCategory } = useSelector(
-    (state) => state.passwords
-  );
-  const [showPassword, setShowPassword] = useState({});
-  const [copiedField, setCopiedField] = useState(null);
+import { useDeletePasswordMutation, useGetPasswordQuery } from "../store/feature/passwordApi";
 
+
+const PasswordList = () => {
+
+  //  const [updateBranch] = useUpdatePasswordMutation();
+const [deletePassword] = useDeletePasswordMutation();
+   const { data } = useGetPasswordQuery({});
+   console.log("🍄🍄🍄 - :18 - PasswordList - passwords:", data);
+
+const [showPassword, setShowPassword] = useState({});
+const [copiedField, setCopiedField] = useState(null);
+const [searchTerm, setSearchTerm] = useState("");
+const [selectedCategory, setSelectedCategory] = useState("All");
+  const categories = [
+    "Personal",
+    "Work",
+    "Finance",
+    "Social",
+    "Entertainment",
+    "Health",
+    "Travel",
+    "Education",
+    "Shopping",
+  ];
   const decryptPassword = (encryptedPassword) => {
     const bytes = CryptoJS.AES.decrypt(
       encryptedPassword,
@@ -40,20 +51,21 @@ const PasswordList = () => {
 
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this password?")) {
-      dispatch(deletePassword(id));
+      deletePassword(id);
     }
   };
-
-  const filteredPasswords = passwords
-    .filter(
-      (password) =>
-        selectedCategory === "All" || password.category === selectedCategory
-    )
-    .filter(
-      (password) =>
-        password.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        password.username.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+  const passwords = data || [];
+const filteredPasswords = passwords
+  // const filteredPasswords = passwords
+  //   .filter(
+  //     (password) =>
+  //       selectedCategory === "All" || password.category === selectedCategory
+  //   )
+  //   .filter(
+  //     (password) =>
+  //       password.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       password.username.toLowerCase().includes(searchTerm.toLowerCase())
+  //   );
   const stats = {
     total: passwords.length,
     personal: passwords.filter((p) => p.category === "Personal").length,
@@ -66,7 +78,7 @@ const PasswordList = () => {
       <div className="w-11/12 mx-auto lg:px-8 py-6 md:space-y-4 space-y-3">
         <div className="grid grid-cols-4 md:gap-4 gap-1 font-['JetBrains_Mono']">
           <div
-            onClick={() => dispatch(setSelectedCategory("All"))}
+            onClick={() => (setSelectedCategory("All"))}
             className="bg-gradient-to-br from-blue-50 to-blue-400 p-2 rounded-lg shadow-sm hover:shadow-md duration-300 border border-blue-200/30 cursor-pointer hover:scale-105 transform transition-transform"
           >
             <h3 className="md:text-xl text-xs font-semibold text-blue-800 truncate">
@@ -77,7 +89,7 @@ const PasswordList = () => {
             </p>
           </div>
           <div
-            onClick={() => dispatch(setSelectedCategory("Personal"))}
+            onClick={() => setSelectedCategory("Personal")}
             className="bg-gradient-to-br from-green-50 to-green-400 p-2 rounded-lg shadow-sm hover:shadow-md duration-300 border border-green-200/30 cursor-pointer hover:scale-105 transform transition-transform"
           >
             <h3 className="md:text-xl text-xs  font-semibold text-green-800 truncate">
@@ -88,7 +100,7 @@ const PasswordList = () => {
             </p>
           </div>
           <div
-            onClick={() => dispatch(setSelectedCategory("Work"))}
+            onClick={() => (setSelectedCategory("Work"))}
             className="bg-gradient-to-br from-yellow-50 to-yellow-300 p-2 rounded-lg shadow-sm hover:shadow-md duration-300 border border-yellow-200/30 cursor-pointer hover:scale-105 transform transition-transform"
           >
             <h3 className="md:text-xl text-xs  font-semibold text-yellow-800 truncate">
@@ -99,7 +111,7 @@ const PasswordList = () => {
             </p>
           </div>
           <div
-            onClick={() => dispatch(setSelectedCategory("Finance"))}
+            onClick={() => (setSelectedCategory("Finance"))}
             className="bg-gradient-to-br from-purple-50 to-purple-300 p-2 rounded-lg shadow-sm hover:shadow-md duration-300 border border-purple-200/30 cursor-pointer hover:scale-105 transform transition-transform"
           >
             <h3 className="md:text-xl text-xs  font-semibold text-purple-800 truncate">
@@ -133,13 +145,13 @@ const PasswordList = () => {
               placeholder="Search passwords..."
               className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 text-sm bg-gray-50 hover:bg-white transition-colors duration-200"
               value={searchTerm}
-              onChange={(e) => dispatch(setSearchTerm(e.target.value))}
+              onChange={(e) => (setSearchTerm(e.target.value))}
             />
           </div>
           <select
             className="block  font-['JetBrains_Mono'] w-full sm:w-48 py-3 pl-3 pr-10 text-sm border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-lg bg-gray-50 hover:bg-white transition-colors duration-200"
             value={selectedCategory}
-            onChange={(e) => dispatch(setSelectedCategory(e.target.value))}
+            onChange={(e) => (setSelectedCategory(e.target.value))}
           >
             <option value="All">All Categories</option>
             {categories.map((category) => (

@@ -26,7 +26,7 @@ export class AuthController {
       const createAuthDto = {
         email: body.email,
         otp: hashedOTP,
-        otpExpiresAt: new Date(Date.now() + 1500 * 60 * 1000),
+        otpExpiresAt: new Date(Date.now() + 2 * 60 * 1000),
         isOtpVerified: false,
         accessToken: null,
         accessTokenExpiresAt: null,
@@ -36,7 +36,7 @@ export class AuthController {
         passwordId: body.passwordId
       };
       await this.authService.createOTPInDB(createAuthDto);
-      return createApiResponse('success', 200, 'Email sent to email successfully', null);
+      return createApiResponse('success', 200, 'OTP sent to email successfully', null);
     } catch (error) {
       return createApiResponse('error', 400, error.message || 'Failed to send email', null);
     }
@@ -64,7 +64,7 @@ export class AuthController {
         sameSite: 'strict',
         maxAge: 7 * 24 * 60 * 60 * 1000
       });
-      return createApiResponse('success', 200, result.email, null);
+      return createApiResponse('success', 200, 'OTP verified successfully', null);
     } catch (error) {
       return createApiResponse(
         'error',

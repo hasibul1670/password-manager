@@ -1,25 +1,57 @@
 import { motion } from "framer-motion";
 import Lottie from "lottie-react";
 import React, { useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import welcomeAnimation from "../assets/animations/Animation - 1743005982427.json";
 import Layout from "../components/Layout";
-import { setEmail, setOtpSent, setOtpVerified } from "../store/authSlice";
+import {
+  useSendOtpMutation,
+  useVerifyOtpMutation,
+} from "../store/feature/authApi";
 
 const Login = () => {
-  const dispatch = useDispatch();
+  const [secondsRemaining, setSecondsRemaining] = useState(0);
+const intervalRef = useRef(null);
+
+const startOtpTimer = (duration = 120) => {
+  setSecondsRemaining(duration);
+  if (intervalRef.current) {
+    clearInterval(intervalRef.current);
+  }
+  intervalRef.current = setInterval(() => {
+    setSecondsRemaining((prev) => {
+      if (prev <= 1) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+        return 0;
+      }
+      return prev - 1;
+    });
+  }, 1000);
+};
+
   const navigate = useNavigate();
-  const { email, otpSent } = useSelector((state) => state.auth);
-  const [emailInput, setEmailInput] = useState("");
+  const [ sendOtp ] = useSendOtpMutation();
+  const [verifyOtp] = useVerifyOtpMutation();
+  const [email, setEmail] = useState("");
+  const [isOtpSend, setIsOtpSend] = useState(false);
   const [otpValues, setOtpValues] = useState(["", "", "", ""]);
   const otpRefs = [useRef(), useRef(), useRef(), useRef()];
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
-    dispatch(setEmail(emailInput));
-    // TODO: Implement actual OTP sending logic here
-    dispatch(setOtpSent(true));
+    const res = await sendOtp({ data: { email: email } });
+    if (res?.data?.status !== "success") {
+      toast.error(res?.data?.message);
+      return;
+    }else{
+      toast.success(res?.data?.message);
+      setIsOtpSend(true);
+      setEmail(email);
+     startOtpTimer(120);
+    }
+
   };
 
   const handleOtpChange = (index, value) => {
@@ -42,16 +74,30 @@ const Login = () => {
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
     const otpString = otpValues.join("");
+
     if (otpString.length === 4) {
-      // TODO: Implement actual OTP verification logic here
-      dispatch(setOtpVerified(true));
-      navigate("/passwords");
+      try {
+        const response = await verifyOtp({
+          data: { email: email, otp: otpString },
+        });
+        if (response?.data?.status === "success") {
+          toast.success(response?.data?.message);
+          navigate("/passwords");
+        } else {
+          toast.error(response?.data?.message);
+        }
+      } catch (error) {
+        console.error("An error occurred during OTP verification:", error);
+      }
     }
   };
 
+
+ 
+
   return (
     <Layout>
-      <div className="grid md:grid-cols-2 gap-8 h-full items-center px-4 md:px-8">
+      <div className="grid md:grid-cols-2 gap-8 h-full items-center px-4 md:px-8 lg:mt-40 mt-10">
         <div className="hidden md:flex justify-center items-center h-full">
           <Lottie
             animationData={welcomeAnimation}
@@ -82,8 +128,11 @@ const Login = () => {
             >
               Welcome Back
             </motion.h2>
-            {!otpSent ? (
-              <form onSubmit={handleEmailSubmit} className="space-y-6">
+            {!isOtpSend ? (
+              <form
+                onSubmit={(e) => handleEmailSubmit(e)}
+                className="space-y-6"
+              >
                 <div className="relative">
                   <label className="block text-gray-700 text-sm font-medium mb-2 font-inter">
                     Email Address
@@ -91,8 +140,8 @@ const Login = () => {
                   <motion.input
                     whileFocus={{ scale: 1.02 }}
                     type="email"
-                    value={emailInput}
-                    onChange={(e) => setEmailInput(e.target.value)}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="w-full p-4 border border-gray-300 rounded-xl bg-white/50 backdrop-blur-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-800 placeholder-gray-500 font-inter"
                     placeholder="Enter your email"
                     required
@@ -136,6 +185,18 @@ const Login = () => {
                     ))}
                   </div>
                 </div>
+
+                {/* TIMER DISPLAY */}
+                <p className="text-center text-sm text-gray-500">
+                  {secondsRemaining > 0
+                    ? `Code expires in ${Math.floor(secondsRemaining / 60)
+                        .toString()
+                        .padStart(2, "0")}:${(secondsRemaining % 60)
+                        .toString()
+                        .padStart(2, "0")}`
+                    : "OTP has expired"}
+                </p>
+
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}

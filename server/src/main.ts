@@ -9,6 +9,11 @@ import { AllExceptionsFilter } from './common/utils/all-exceptions.filter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api/v1');
+  app.enableCors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  });
+
   app.use(cookieParser());
   app.get(ConfigService);
   app.useGlobalPipes(validationPipe);

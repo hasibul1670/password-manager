@@ -1,15 +1,22 @@
 import { motion } from 'framer-motion';
-import Layout from '../components/Layout';
-import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-import { addPassword } from '../store/passwordSlice';
-import { useDispatch, useSelector } from 'react-redux';
 import { FaEye, FaEyeSlash, FaKey, FaLink, FaTag, FaUser } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import Layout from '../components/Layout';
+import { useCreatePasswordMutation } from '../store/feature/passwordApi';
 
 const AddPassword = () => {
-  const dispatch = useDispatch();
+  
+  const [createPassword] = useCreatePasswordMutation();
   const navigate = useNavigate();
-  const categories = useSelector((state) => state.passwords.categories);
+  const categories = [
+    'Personal',
+    'Work',
+    'Finance',
+    'Social Media',
+    'Shopping',
+    'Travel',
+  ]
   const [showPassword, setShowPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [formData, setFormData] = useState({
@@ -35,7 +42,7 @@ const AddPassword = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addPassword(formData));
+  createPassword(formData)
     navigate('/passwords');
   };
 
